@@ -1,12 +1,12 @@
 import Vue from 'vue'
-import VueRouter from 'vue-router'
+import Router from 'vue-router'
 
 const Home=()=>import('../view/Home/Home')
 const Category=()=>import('../view/Category/Category')
 const Cart=()=>import('../view/Cart/Cart')
 const Profile=()=>import('../view/Profile/Profile')
 
-vue.use(VueRouter)
+vue.use(Router)
 const routes=[
   {
     path:'',
@@ -32,7 +32,7 @@ const routes=[
   }
 ]
 
-const router=new VueRouter({
+const router=new Router({
  routes,
  mode:'history'
 })
