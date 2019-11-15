@@ -6,7 +6,7 @@ const Category=()=>import('../view/Category/Category')
 const Cart=()=>import('../view/Cart/Cart')
 const Profile=()=>import('../view/Profile/Profile')
 
-vue.use(Router)
+Vue.use(Router)
 const routes=[
   {
     path:'',

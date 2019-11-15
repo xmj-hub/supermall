@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-   
+   <router-view></router-view>
    <tab-bar-main/>
-   <TabBarMain/>
+   
   </div>
 </template>
 
