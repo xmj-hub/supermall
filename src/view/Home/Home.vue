@@ -25,8 +25,11 @@
        </a>
      </div>
 
-     <tab-control :titles="['流行','新款','精选']" class="tab-control"></tab-control>
-     <div>
+     <tab-control :titles="['流行','新款','精选']" 
+                  class="tab-control"
+                  @tabClick="tabClick"></tab-control>
+     <good-list :goods="showGoods"/>
+     <!-- <div>
        <ul>
          <li>111</li>
          <li>111</li>
@@ -179,7 +182,7 @@
          <li>111</li>
          <li>111</li>
        </ul>
-     </div>
+     </div> -->
      
 </div>
 
@@ -192,37 +195,79 @@ import {getHomeGoods} from "network/home";
 import {Swiper,SwiperItem} from 'components/common/swiper'
 import NavBar from 'components/common/navbar/NavBar'
 import TabControl from 'components/content/tabControl/TabControl'
+import GoodList from 'components/content/goods/GoodList'
   export default{
     name:'Home',
     data(){
        return{
         banners:null,
         recommend:null,
+       
         goods:{
-          'pop':{page:0,list:[]},
-          'news':{page:0,list:[]},
-          'sell':{page:0,list:[]}
-        }
+          'pop':{page:1,list:[]},
+          'new':{page:1,list:[]},
+          'sell':{page:1,list:[]}
+        },
+        currentType:'pop'
        }
     },
     components:{
       NavBar,
       Swiper,
       SwiperItem,
-      TabControl
+      TabControl,
+      GoodList
+    },
+    computed:{
+         showGoods(){
+           return this.goods[this.currentType].list
+         }
     },
     created(){
       //1.请求多个数据
-      getHomeMultidata().then(res=>{
+      this.getHomeMultidata()
+      this.getHomeGoods('pop')
+      this.getHomeGoods('new')
+      this.getHomeGoods('sell')
+      
+    },
+    methods:{
+      //事件监听相关事件
+      tabClick(index) {
+        switch(index){
+         case 0:    
+         this.currentType='pop'
+         break
+         case 1:
+         this.currentType='new'
+         break
+         case 2:
+         this.currentType='sell'
+         break
+         }
+       console.log(this.currentType)   
+      },
+      //网络请求相关事件
+      getHomeMultidata() {
+        getHomeMultidata().then(res=>{
         this.banners=res.data.banner.list;
         this.recommend=res.data.recommend.list;
-        console.log(this.banners)
+       
         
       })
-      // getHomeGoods('pop',1).then(res=>{
-      //   console.log(res)
-      // })
+      },
+      getHomeGoods(type) {
+        
+        getHomeGoods(type,this.goods[type].page).then(res=>{
+          
+          this.goods[type].list.push(...res.data.list)
+          
+          this.goods[type].page=this.goods[type].page+1
+      })
+      },
+      
     }
+
   }
 </script>
 
@@ -265,6 +310,7 @@ import TabControl from 'components/content/tabControl/TabControl'
 }
 .tab-control{
   position: sticky;
-  top: 44px
+  top: 44px;
+  z-index: 9;
 }
 </style>
