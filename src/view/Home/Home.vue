@@ -3,6 +3,7 @@
    <nav-bar class="home-nav">
      <div slot="center">购物街</div>
    </nav-bar>
+   <better-scroll class="content1" ref="scroll" :probe-type="3">
    <swiper>
    <swiper-item v-for="(item,index) in banners" :key="index">
      <a :href="item.link">
@@ -29,160 +30,14 @@
                   class="tab-control"
                   @tabClick="tabClick"></tab-control>
      <good-list :goods="showGoods"/>
-     <!-- <div>
-       <ul>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-       </ul>
-     </div> -->
+     </better-scroll>
+     <!--  .nation 修饰什么时候使用? 
+      在我们需要监听一个组件的原生事件时，必须给对应的事件加上.nation修饰符，
+      才能进行事件点击监听
+     
+     
+     -->
+     <BackTop @click.native="backClick"></BackTop>
      
 </div>
 
@@ -196,9 +51,12 @@ import {Swiper,SwiperItem} from 'components/common/swiper'
 import NavBar from 'components/common/navbar/NavBar'
 import TabControl from 'components/content/tabControl/TabControl'
 import GoodList from 'components/content/goods/GoodList'
+import BetterScroll from 'components/common/betterScroll/BetterScroll'
+import BackTop from 'components/content/backTop/BackTop'
   export default{
     name:'Home',
     data(){
+      
        return{
         banners:null,
         recommend:null,
@@ -216,7 +74,9 @@ import GoodList from 'components/content/goods/GoodList'
       Swiper,
       SwiperItem,
       TabControl,
-      GoodList
+      GoodList,
+      BetterScroll,
+      BackTop
     },
     computed:{
          showGoods(){
@@ -247,6 +107,9 @@ import GoodList from 'components/content/goods/GoodList'
          }
        console.log(this.currentType)   
       },
+      backClick() {
+         this.$refs.scroll.scrollTo(0,0)
+      },
       //网络请求相关事件
       getHomeMultidata() {
         getHomeMultidata().then(res=>{
@@ -271,9 +134,12 @@ import GoodList from 'components/content/goods/GoodList'
   }
 </script>
 
-<style>
+<style scoped>
+
 #home{
-  padding-top: 44px;
+ 
+  height: 100vh;
+  position: relative;
 }
 .home-nav{
   
@@ -312,5 +178,13 @@ import GoodList from 'components/content/goods/GoodList'
   position: sticky;
   top: 44px;
   z-index: 9;
+}
+.content1{
+  height: calc(100% - 93px);
+  overflow: hidden;
+  position: absolute;
+  top: 44px;
+  bottom: 49px
+  
 }
 </style>

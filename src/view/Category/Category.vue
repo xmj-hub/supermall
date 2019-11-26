@@ -160,7 +160,7 @@ import BScroll from 'better-scroll'
  
 </script>
 
-<style>
+<style scoped>
  .wrapper{
    width: 100%;
    height: 200px;

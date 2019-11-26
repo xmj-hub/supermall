@@ -11,7 +11,7 @@
   }
 </script>
 
-<style>
+<style scoped>
 
   #tab_bar{
     display: flex;
