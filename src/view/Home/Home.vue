@@ -3,7 +3,12 @@
    <nav-bar class="home-nav">
      <div slot="center">购物街</div>
    </nav-bar>
-   <better-scroll class="content1" ref="scroll" :probe-type="3">
+   <better-scroll class="content1" 
+                  ref="scroll" 
+                  :probe-type="3" 
+                  @Scroll="handlepositon"
+                  :pull-up-load="true"
+                  @pullingUp="handlepull">
    <swiper>
    <swiper-item v-for="(item,index) in banners" :key="index">
      <a :href="item.link">
@@ -37,7 +42,7 @@
      
      
      -->
-     <BackTop @click.native="backClick"></BackTop>
+     <BackTop @click.native="backClick" v-show="ishow"></BackTop>
      
 </div>
 
@@ -53,6 +58,7 @@ import TabControl from 'components/content/tabControl/TabControl'
 import GoodList from 'components/content/goods/GoodList'
 import BetterScroll from 'components/common/betterScroll/BetterScroll'
 import BackTop from 'components/content/backTop/BackTop'
+import { log } from 'util';
   export default{
     name:'Home',
     data(){
@@ -60,7 +66,7 @@ import BackTop from 'components/content/backTop/BackTop'
        return{
         banners:null,
         recommend:null,
-       
+        ishow:false,
         goods:{
           'pop':{page:1,list:[]},
           'new':{page:1,list:[]},
@@ -90,6 +96,11 @@ import BackTop from 'components/content/backTop/BackTop'
       this.getHomeGoods('new')
       this.getHomeGoods('sell')
       
+      //3.监听item中图片加载完成
+      this.$bus.$on('itemImageLoad',()=>{
+            //  console.log('image')
+             this.$refs.scroll.refresh()
+      })
     },
     methods:{
       //事件监听相关事件
@@ -110,6 +121,19 @@ import BackTop from 'components/content/backTop/BackTop'
       backClick() {
          this.$refs.scroll.scrollTo(0,0)
       },
+      handlepositon(position){
+        // console.log(position)
+        if(-position.y>1000){
+          this.ishow=true
+        }else{
+          this.ishow=false
+        }
+      },
+      handlepull(){
+        this.getHomeGoods(this.currentType)
+        
+      //  console.log("上拉加载更多")
+      },
       //网络请求相关事件
       getHomeMultidata() {
         getHomeMultidata().then(res=>{
@@ -120,12 +144,14 @@ import BackTop from 'components/content/backTop/BackTop'
       })
       },
       getHomeGoods(type) {
-        
+         const page=this.goods[type].page+1
         getHomeGoods(type,this.goods[type].page).then(res=>{
           
           this.goods[type].list.push(...res.data.list)
           
-          this.goods[type].page=this.goods[type].page+1
+          this.goods[type].page+=1
+
+          this.$refs.scroll.finishPullUp()
       })
       },
       
