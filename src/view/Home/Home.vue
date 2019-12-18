@@ -96,13 +96,28 @@ import { log } from 'util';
       this.getHomeGoods('new')
       this.getHomeGoods('sell')
       
-      //3.监听item中图片加载完成
+   
+    },
+    mounted() {
+         //3.监听item中图片加载完成
+      const refresh=this.debounce(this.$refs.scroll.refresh,500)
       this.$bus.$on('itemImageLoad',()=>{
             //  console.log('image')
-             this.$refs.scroll.refresh()
+             refresh()
       })
     },
     methods:{
+      debounce(func,delay) {
+          let timer = null
+           
+          return function (...args) {
+           if(timer) clearTimeout(timer)
+
+           timer =setTimeout(()=>{
+               func.apply(this,args)
+           },delay)
+          }
+      },  
       //事件监听相关事件
       tabClick(index) {
         switch(index){

@@ -49,13 +49,14 @@ export default {
     },
     methods: {
         scrollTo(x,y,time=3000){
-          this.bscroll.scrollTo(x,y,time)
+        this.bscroll && this.bscroll.scrollTo && this.bscroll.scrollTo(x,y,time)
         },
         finishPullUp() {
-            this.bscroll.finishPullUp()
+        this.bscroll && this.bscroll.scrollTo && this.bscroll.finishPullUp()
         },
         refresh() {
-           this.bscroll.refresh()
+            // console.log("----")
+        this.bscroll && this.bscroll.scrollTo && this.bscroll.refresh()
         }
     },
 
