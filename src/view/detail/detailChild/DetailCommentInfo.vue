@@ -6,10 +6,10 @@
         </div>
         <div class="comment_name">
             <div class="user_img">
-               <img :src="commentInfo.user.avatar" alt=""> 
+               <img :src="commentInfo.avatar" alt=""> 
             </div>
             <div class="user_name">
-                {{commentInfo.user.uname}}
+                {{commentInfo.uname}}
             </div>
         </div>
 
@@ -58,6 +58,7 @@ export default {
    /* margin: 0 15px; */
    padding: 10px 15px 0;
    border-top: 10px solid gray; 
+   margin-bottom: 20px;
 }
 .comment{
     display: flex;

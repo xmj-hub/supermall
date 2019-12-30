@@ -15,11 +15,12 @@
     <detailInfo :detailInfo="detailInfo"></detailInfo>
     <item-params :itemParams="itemParams"></item-params>
     <detail-comment-info :commentInfo="commentInfo"></detail-comment-info>
+     <good-list :goods="recommends"/>
     </Scroll>
   </div>
 </template>
 <script>
-import { getdetail,GoodsInfo,Shopinfo} from "network/detail";
+import { getdetail,GoodsInfo,Shopinfo,getRecommend} from "network/detail";
 import DetailNavBar from "./detailChild/DetailNavBar";
 import {Swiper,SwiperItem} from 'components/common/swiper'
 import introduce from "./detailChild/introduce"
@@ -28,6 +29,7 @@ import detailInfo from "./detailChild/detailInfo"
 import itemParams from "./detailChild/itemParams"
 import Scroll from "components/common/betterScroll/BetterScroll"
 import DetailCommentInfo from "./detailChild/DetailCommentInfo"
+import GoodList from 'components/content/goods/GoodList'
 export default {
   name: "Detail",
   data() {
@@ -46,7 +48,14 @@ export default {
        tables:[],
        set:[]
        },
-       commentInfo:{}
+       commentInfo:{
+         avatar:'',
+         uname:'',
+         content:'',
+         created:'',
+         style:''
+       },
+       recommends:[]
     };
   },
   components: {
@@ -58,7 +67,8 @@ export default {
     Scroll,
     detailInfo,
     itemParams,
-    DetailCommentInfo
+    DetailCommentInfo,
+    GoodList
     
   },
   created() {
@@ -67,6 +77,10 @@ export default {
 
     //2获取商品信息
   
+   //3.请求推荐数据
+   getRecommend().then(res=>{
+     this.recommends=res.data.list
+   })
   },
   methods: {
     getdetail(iid) {
@@ -84,6 +98,12 @@ export default {
         //取出评论信息
         if(data.rate.cRate!==0){
           this.commentInfo=data.rate.list[0]
+          this.commentInfo.avatar=data.rate.list[0].user.avatar
+          this.commentInfo.uname=data.rate.list[0].user.uname
+          this.commentInfo.content=data.rate.list[0].content
+          this.commentInfo.created=data.rate.list[0].created
+          this.commentInfo.style=data.rate.list[0].style
+       
         }
         console.log( res);
       });
