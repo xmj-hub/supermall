@@ -1,6 +1,6 @@
 <template>
     <div class="goods">
-     <goods-list-item v-for="(item,index) in goods" :key="index" :goods-item="item"/>
+     <goods-list-item v-for="(item,index) in goods" :key="index" :goods-item="item" />
     </div>
 </template>
 <script>
@@ -18,7 +18,10 @@ export default {
                 return []
             }
         }
-    }
+    },
+    methods: {
+        
+    },
 }
 </script>
 <style scoped>

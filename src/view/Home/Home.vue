@@ -12,7 +12,7 @@
    <swiper>
    <swiper-item v-for="(item,index) in banners" :key="index">
      <a :href="item.link">
-       <img :src="item.image" alt="">
+       <img :src="item.image" @load.once="imageLoad">
      </a>
    </swiper-item>
    </swiper>
@@ -32,8 +32,10 @@
      </div>
 
      <tab-control :titles="['流行','新款','精选']" 
-                  class="tab-control"
-                  @tabClick="tabClick"></tab-control>
+               
+                  @tabClick="tabClick"
+                  ref="tabControl"
+                  :class="{fixed:isTabFixed}"></tab-control>
      <good-list :goods="showGoods"/>
      </better-scroll>
      <!--  .nation 修饰什么时候使用? 
@@ -72,7 +74,9 @@ import { log } from 'util';
           'new':{page:1,list:[]},
           'sell':{page:1,list:[]}
         },
-        currentType:'pop'
+        currentType:'pop',
+        tabOffsetTop:544,
+        isTabFixed:false
        }
     },
     components:{
@@ -105,8 +109,20 @@ import { log } from 'util';
             //  console.log('image')
              refresh()
       })
+
+      //2.获取tabControl的offsetTop
+      //所有的组件都有一个数组#el:用于获取组件中的元素
+      // this.tabOffsetTop=
+      
+      
     },
     methods:{
+      imageLoad(){
+       this.tabOffsetTop=this.$refs.tabControl.$el.offsetTop 
+       if(this.tabOffsetTop===544){
+          
+       }
+      },
       debounce(func,delay) {
           let timer = null
            
@@ -143,6 +159,8 @@ import { log } from 'util';
         }else{
           this.ishow=false
         }
+
+        this.isTabFixed=(-position.y)>this.tabOffsetTop
       },
       handlepull(){
         this.getHomeGoods(this.currentType)
@@ -215,11 +233,11 @@ import { log } from 'util';
 .featureview img{
   width: 100%;
 }
-.tab-control{
+/* .tab-control{
   position: sticky;
   top: 44px;
   z-index: 9;
-}
+} */
 .content1{
   height: calc(100% - 93px);
   overflow: hidden;
@@ -227,5 +245,11 @@ import { log } from 'util';
   top: 44px;
   bottom: 49px
   
+}
+.fixed{
+  position: fixed;
+  top: 44px;
+  left: 0;
+  right: 0;
 }
 </style>
