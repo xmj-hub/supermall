@@ -57,6 +57,9 @@ export default {
         refresh() {
             // console.log("----")
         this.bscroll && this.bscroll.scrollTo && this.bscroll.refresh()
+        },
+        getCurrentY() {
+            return this.bscroll.y ? this.bscroll.y : 0
         }
     },
 

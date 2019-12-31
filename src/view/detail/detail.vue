@@ -2,7 +2,7 @@
   <div id="detail">
       
     <detail-nav-bar class="detail_nav"></detail-nav-bar>
-    <Scroll class="content">
+    <Scroll class="content" ref="scroll">
     <swiper class="swiper_item">
       <swiper-item  v-for="(item,index) in imgtop" :key="index">
         <!-- <a :href="item.link"> -->
@@ -17,6 +17,8 @@
     <detail-comment-info :commentInfo="commentInfo"></detail-comment-info>
      <good-list :goods="recommends"/>
     </Scroll>
+    <BackTop ></BackTop>
+    <detail-bottom-bar></detail-bottom-bar>  
   </div>
 </template>
 <script>
@@ -30,12 +32,17 @@ import itemParams from "./detailChild/itemParams"
 import Scroll from "components/common/betterScroll/BetterScroll"
 import DetailCommentInfo from "./detailChild/DetailCommentInfo"
 import GoodList from 'components/content/goods/GoodList'
+import DetailBottomBar from './detailChild/DetailBottomBar'
+import {debounce} from '@/common/utils'
+import BackTop from 'components/content/backTop/BackTop'
 export default {
   name: "Detail",
   data() {
     return {
       iid: null,
       imgtop: [],
+       itemImgListener:null,
+        // ishow:false,
       goodsitem:{},
       shopinfo:{},
       detailInfo:{
@@ -68,8 +75,16 @@ export default {
     detailInfo,
     itemParams,
     DetailCommentInfo,
-    GoodList
+    GoodList,
+    DetailBottomBar,
+    BackTop
     
+  },
+  activated() {
+
+  },
+  destroyed() {
+     this.$bus.$off('itemImageLoad',this.itemImgListener)
   },
   created() {
     this.iid = this.$route.query.id;
@@ -81,6 +96,14 @@ export default {
    getRecommend().then(res=>{
      this.recommends=res.data.list
    })
+  },
+  mounted() {
+    let newRefresh=debounce(this.$refs.scroll.refresh,100)
+      this.itemImgListener=()=>{
+            //  console.log('image')
+             newRefresh()}
+    
+    this.$bus.$on('itemImageLoad', this.itemImgListener)
   },
   methods: {
     getdetail(iid) {
@@ -124,7 +147,7 @@ export default {
 
 }
 .content{
-    height: calc(100% - 44px);
+    height: calc(100% - 44px - 49px);
 }
 .detail_nav{
     position: relative;

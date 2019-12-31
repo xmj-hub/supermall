@@ -1,101 +1,9 @@
 <template>
-   <Scroll class="content">
-         <ul>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-           <li>个人信息</li>
-         </ul>
-   </Scroll>
+ <div class="profile">
+   <div>我的档案</div>
+   <div class="bg"></div>  
+
+ </div>
 </template>
 
 <script>
@@ -109,9 +17,20 @@
 </script>
 
 <style scoped>
+.profile{
+  background-color: gray;
+  padding: 0 5%;
+}
 .content{
   height: 300px;
   background-color: red;
   overflow: hidden;
+}
+.bg{
+  border-radius: 20px;
+  background-color: #fff;
+  
+  width: 100%;
+  height: 200px;
 }
 </style>

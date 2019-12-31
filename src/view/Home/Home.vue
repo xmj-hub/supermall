@@ -3,6 +3,13 @@
    <nav-bar class="home-nav">
      <div slot="center">购物街</div>
    </nav-bar>
+    <tab-control :titles="['流行','新款','精选']" 
+               
+                  @tabClick="tabClick"
+                  ref="tabControl1"
+                  class="tab_control"
+                  v-show="isTabFixed"
+                  ></tab-control>
    <better-scroll class="content1" 
                   ref="scroll" 
                   :probe-type="3" 
@@ -34,8 +41,8 @@
      <tab-control :titles="['流行','新款','精选']" 
                
                   @tabClick="tabClick"
-                  ref="tabControl"
-                  :class="{fixed:isTabFixed}"></tab-control>
+                  ref="tabControl2"
+                  ></tab-control>
      <good-list :goods="showGoods"/>
      </better-scroll>
      <!--  .nation 修饰什么时候使用? 
@@ -75,7 +82,9 @@ import { log } from 'util';
           'sell':{page:1,list:[]}
         },
         currentType:'pop',
-        tabOffsetTop:544,
+        tabOffsetTop:545,
+        saveY:0,
+        itemImgListener:null,
         isTabFixed:false
        }
     },
@@ -93,6 +102,19 @@ import { log } from 'util';
            return this.goods[this.currentType].list
          }
     },
+      activated() {
+        // console.log('home enter')
+        this.$refs.scroll.scrollTo(0 ,this.saveY, 0)
+        this.$refs.scroll.refresh()
+      },
+      deactivated() {
+        this.saveY=this.$refs.scroll.getCurrentY()
+        // console.log('home leava')
+        // console.log(this.saveY)
+        this.$bus.$off('itemImageLoad',this.itemImgListener)
+      },
+
+
     created(){
       //1.请求多个数据
       this.getHomeMultidata()
@@ -103,12 +125,14 @@ import { log } from 'util';
    
     },
     mounted() {
+       const refresh=this.debounce(this.$refs.scroll.refresh,500)
          //3.监听item中图片加载完成
-      const refresh=this.debounce(this.$refs.scroll.refresh,500)
-      this.$bus.$on('itemImageLoad',()=>{
+        this.itemImgListener=()=>{
             //  console.log('image')
-             refresh()
-      })
+             refresh()}
+     
+      this.$bus.$on('itemImageLoad', this.itemImgListener
+      )
 
       //2.获取tabControl的offsetTop
       //所有的组件都有一个数组#el:用于获取组件中的元素
@@ -118,7 +142,7 @@ import { log } from 'util';
     },
     methods:{
       imageLoad(){
-       this.tabOffsetTop=this.$refs.tabControl.$el.offsetTop 
+       this.tabOffsetTop=this.$refs.tabControl2.$el.offsetTop 
        if(this.tabOffsetTop===544){
           
        }
@@ -147,19 +171,23 @@ import { log } from 'util';
          this.currentType='sell'
          break
          }
-       console.log(this.currentType)   
+         this.$refs.tabControl1.currentindex=index
+         this.$refs.tabControl2.currentindex=index
+      //  console.log(this.currentType)   
       },
       backClick() {
          this.$refs.scroll.scrollTo(0,0)
       },
       handlepositon(position){
         // console.log(position)
+        //1.判断BackTop是否显示
         if(-position.y>1000){
           this.ishow=true
         }else{
           this.ishow=false
         }
-
+        
+        //2.决定tabControl是否吸顶(position:fixed)
         this.isTabFixed=(-position.y)>this.tabOffsetTop
       },
       handlepull(){
@@ -204,11 +232,11 @@ import { log } from 'util';
   
   background-color: var(--color-tint);
   color:white;
-  position: fixed;
+  /* position: fixed;
   left: 0;
   right: 0;
   top: 0;
-  z-index: 9;
+  z-index: 9; */
 }
 .recommend{
   display: flex;
@@ -238,6 +266,10 @@ import { log } from 'util';
   top: 44px;
   z-index: 9;
 } */
+.tab_control{
+  position: relative;
+  z-index: 9;
+}
 .content1{
   height: calc(100% - 93px);
   overflow: hidden;
@@ -246,10 +278,10 @@ import { log } from 'util';
   bottom: 49px
   
 }
-.fixed{
+/* .fixed{
   position: fixed;
   top: 44px;
   left: 0;
   right: 0;
-}
+} */
 </style>
