@@ -1,7 +1,9 @@
 <template>
  <div class="profile">
-   <div>我的档案</div>
-   <div class="bg"></div>  
+   <div class="name">我的档案</div>
+   <div class="bg">111</div>  
+   <div class="bg">222</div>  
+   <div class="bg">333</div>  
 
  </div>
 </template>
@@ -26,11 +28,17 @@
   background-color: red;
   overflow: hidden;
 }
+.name{
+  font-size: 24px;
+  color: white;
+}
 .bg{
-  border-radius: 20px;
+  border-radius: 30px;
   background-color: #fff;
   
   width: 100%;
-  height: 200px;
+  height: 189px;
+  margin-bottom: 10px;
+  text-align: center;
 }
 </style>
