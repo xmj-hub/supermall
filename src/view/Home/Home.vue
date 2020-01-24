@@ -26,159 +26,15 @@
      </div>
 
      <tab-control :titles="['流行','新款','精选']" class="tab-control"></tab-control>
-     <div>
-       <ul>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-         <li>111</li>
-       </ul>
+     <div class="content_item">
+     <div v-for="(item,index) in list" :key="index" class="item">
+        <a href="javascript:;">
+         <img :src="item.img" alt="">
+         <p>{{item.title}}</p>
+         <p>{{item.price}}</p>
+         <p>{{item.cfav}}</p>
+         </a>
+     </div>
      </div>
      
 </div>
@@ -198,6 +54,7 @@ import TabControl from 'components/content/tabControl/TabControl'
        return{
         banners:null,
         recommend:null,
+        list:null,
         goods:{
           'pop':{page:0,list:[]},
           'news':{page:0,list:[]},
@@ -216,12 +73,14 @@ import TabControl from 'components/content/tabControl/TabControl'
       getHomeMultidata().then(res=>{
         this.banners=res.data.banner.list;
         this.recommend=res.data.recommend.list;
-        console.log(this.banners)
+        console.log(res)
         
       })
-      // getHomeGoods('pop',1).then(res=>{
-      //   console.log(res)
-      // })
+      getHomeGoods().then(res=>{
+        console.log(res)
+         this.list=res.data.lists;
+         console.log(this.list)
+      })
     }
   }
 </script>
@@ -266,5 +125,19 @@ import TabControl from 'components/content/tabControl/TabControl'
 .tab-control{
   position: sticky;
   top: 44px
+}
+.content_item{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content:space-around;
+}
+.item{
+ 
+  width: 48%;
+  
+}
+.item img{
+  width: 100%;
+  
 }
 </style>
