@@ -3,10 +3,23 @@
    <nav-bar class="home-nav">
      <div slot="center">购物街</div>
    </nav-bar>
+    <tab-control :titles="['流行','新款','精选']" 
+               
+                  @tabClick="tabClick"
+                  ref="tabControl1"
+                  class="tab_control"
+                  v-show="isTabFixed"
+                  ></tab-control>
+   <better-scroll class="content1" 
+                  ref="scroll" 
+                  :probe-type="3" 
+                  @Scroll="handlepositon"
+                  :pull-up-load="true"
+                  @pullingUp="handlepull">
    <swiper>
    <swiper-item v-for="(item,index) in banners" :key="index">
      <a :href="item.link">
-       <img :src="item.image" alt="">
+       <img :src="item.image" @load.once="imageLoad">
      </a>
    </swiper-item>
    </swiper>
@@ -25,6 +38,7 @@
        </a>
      </div>
 
+<<<<<<< HEAD
      <tab-control :titles="['流行','新款','精选']" class="tab-control"></tab-control>
      <div class="content_item">
      <div v-for="(item,index) in list" :key="index" class="item">
@@ -36,6 +50,22 @@
          </a>
      </div>
      </div>
+=======
+     <tab-control :titles="['流行','新款','精选']" 
+               
+                  @tabClick="tabClick"
+                  ref="tabControl2"
+                  ></tab-control>
+     <good-list :goods="showGoods"/>
+     </better-scroll>
+     <!--  .nation 修饰什么时候使用? 
+      在我们需要监听一个组件的原生事件时，必须给对应的事件加上.nation修饰符，
+      才能进行事件点击监听
+     
+     
+     -->
+     <BackTop @click.native="backClick" v-show="ishow"></BackTop>
+>>>>>>> c3cb98c7d3ec838fecf6cd3c62879d2e3e3a4d07
      
 </div>
 
@@ -48,31 +78,147 @@ import {getHomeGoods} from "network/home";
 import {Swiper,SwiperItem} from 'components/common/swiper'
 import NavBar from 'components/common/navbar/NavBar'
 import TabControl from 'components/content/tabControl/TabControl'
+import GoodList from 'components/content/goods/GoodList'
+import BetterScroll from 'components/common/betterScroll/BetterScroll'
+import BackTop from 'components/content/backTop/BackTop'
+import { log } from 'util';
   export default{
     name:'Home',
     data(){
+      
        return{
         banners:null,
         recommend:null,
+<<<<<<< HEAD
         list:null,
+=======
+        ishow:false,
+>>>>>>> c3cb98c7d3ec838fecf6cd3c62879d2e3e3a4d07
         goods:{
-          'pop':{page:0,list:[]},
-          'news':{page:0,list:[]},
-          'sell':{page:0,list:[]}
-        }
+          'pop':{page:1,list:[]},
+          'new':{page:1,list:[]},
+          'sell':{page:1,list:[]}
+        },
+        currentType:'pop',
+        tabOffsetTop:545,
+        saveY:0,
+        itemImgListener:null,
+        isTabFixed:false
        }
     },
     components:{
       NavBar,
       Swiper,
       SwiperItem,
-      TabControl
+      TabControl,
+      GoodList,
+      BetterScroll,
+      BackTop
     },
+    computed:{
+         showGoods(){
+           return this.goods[this.currentType].list
+         }
+    },
+      activated() {
+        // console.log('home enter')
+        this.$refs.scroll.scrollTo(0 ,this.saveY, 0)
+        this.$refs.scroll.refresh()
+      },
+      deactivated() {
+        this.saveY=this.$refs.scroll.getCurrentY()
+        // console.log('home leava')
+        // console.log(this.saveY)
+        this.$bus.$off('itemImageLoad',this.itemImgListener)
+      },
+
+
     created(){
       //1.请求多个数据
-      getHomeMultidata().then(res=>{
+      this.getHomeMultidata()
+      this.getHomeGoods('pop')
+      this.getHomeGoods('new')
+      this.getHomeGoods('sell')
+      
+   
+    },
+    mounted() {
+       const refresh=this.debounce(this.$refs.scroll.refresh,500)
+         //3.监听item中图片加载完成
+        this.itemImgListener=()=>{
+            //  console.log('image')
+             refresh()}
+     
+      this.$bus.$on('itemImageLoad', this.itemImgListener
+      )
+
+      //2.获取tabControl的offsetTop
+      //所有的组件都有一个数组#el:用于获取组件中的元素
+      // this.tabOffsetTop=
+      
+      
+    },
+    methods:{
+      imageLoad(){
+       this.tabOffsetTop=this.$refs.tabControl2.$el.offsetTop 
+       if(this.tabOffsetTop===544){
+          
+       }
+      },
+      debounce(func,delay) {
+          let timer = null
+           
+          return function (...args) {
+           if(timer) clearTimeout(timer)
+
+           timer =setTimeout(()=>{
+               func.apply(this,args)
+           },delay)
+          }
+      },  
+      //事件监听相关事件
+      tabClick(index) {
+        switch(index){
+         case 0:    
+         this.currentType='pop'
+         break
+         case 1:
+         this.currentType='new'
+         break
+         case 2:
+         this.currentType='sell'
+         break
+         }
+         this.$refs.tabControl1.currentindex=index
+         this.$refs.tabControl2.currentindex=index
+      //  console.log(this.currentType)   
+      },
+      backClick() {
+         this.$refs.scroll.scrollTo(0,0)
+      },
+      handlepositon(position){
+        // console.log(position)
+        //1.判断BackTop是否显示
+        if(-position.y>1000){
+          this.ishow=true
+        }else{
+          this.ishow=false
+        }
+        
+        //2.决定tabControl是否吸顶(position:fixed)
+        this.isTabFixed=(-position.y)>this.tabOffsetTop
+      },
+      handlepull(){
+        this.getHomeGoods(this.currentType)
+        
+      //  console.log("上拉加载更多")
+      },
+      //网络请求相关事件
+      getHomeMultidata() {
+        getHomeMultidata().then(res=>{
         this.banners=res.data.banner.list;
         this.recommend=res.data.recommend.list;
+<<<<<<< HEAD
         console.log(res)
         
       })
@@ -81,23 +227,45 @@ import TabControl from 'components/content/tabControl/TabControl'
          this.list=res.data.lists;
          console.log(this.list)
       })
+=======
+       
+        
+      })
+      },
+      getHomeGoods(type) {
+         const page=this.goods[type].page+1
+        getHomeGoods(type,this.goods[type].page).then(res=>{
+          
+          this.goods[type].list.push(...res.data.list)
+          
+          this.goods[type].page+=1
+
+          this.$refs.scroll.finishPullUp()
+      })
+      },
+      
+>>>>>>> c3cb98c7d3ec838fecf6cd3c62879d2e3e3a4d07
     }
+
   }
 </script>
 
-<style>
+<style scoped>
+
 #home{
-  padding-top: 44px;
+ 
+  height: 100vh;
+  position: relative;
 }
 .home-nav{
   
   background-color: var(--color-tint);
   color:white;
-  position: fixed;
+  /* position: fixed;
   left: 0;
   right: 0;
   top: 0;
-  z-index: 9;
+  z-index: 9; */
 }
 .recommend{
   display: flex;
@@ -122,10 +290,24 @@ import TabControl from 'components/content/tabControl/TabControl'
 .featureview img{
   width: 100%;
 }
-.tab-control{
+/* .tab-control{
   position: sticky;
-  top: 44px
+  top: 44px;
+  z-index: 9;
+} */
+.tab_control{
+  position: relative;
+  z-index: 9;
 }
+.content1{
+  height: calc(100% - 93px);
+  overflow: hidden;
+  position: absolute;
+  top: 44px;
+  bottom: 49px
+  
+}
+<<<<<<< HEAD
 .content_item{
   display: flex;
   flex-wrap: wrap;
@@ -140,4 +322,12 @@ import TabControl from 'components/content/tabControl/TabControl'
   width: 100%;
   
 }
+=======
+/* .fixed{
+  position: fixed;
+  top: 44px;
+  left: 0;
+  right: 0;
+} */
+>>>>>>> c3cb98c7d3ec838fecf6cd3c62879d2e3e3a4d07
 </style>

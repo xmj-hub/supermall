@@ -21,6 +21,7 @@ export default {
     methods:{
         indexitem(index){
             this.currentindex=index
+            this.$emit('tabClick',index)
         }
     },
     props:{
