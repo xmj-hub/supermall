@@ -6,6 +6,7 @@ const Category=()=>import('../view/Category/Category')
 const Cart=()=>import('../view/Cart/Cart')
 const Profile=()=>import('../view/Profile/Profile')
 const Detail=()=>import('../view/detail/detail')
+const Collect=()=>import('../view/Profile/collect.vue')
 
 Vue.use(Router)
 const routes=[
@@ -34,7 +35,13 @@ const routes=[
   {
     path:'/detail',
     component:Detail,
+  },
+   {
+    path:'/collect',
+    component:Collect,
   }
+
+
 ]
 
 const router=new Router({

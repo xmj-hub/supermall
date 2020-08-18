@@ -10,11 +10,11 @@
         </div>
         <div class="collect">
              <img src="@/assets/img/detail/收藏.png" alt="">
-            <div>收藏</div>
+            <div @click="addTocars()">收藏</div>
         </div>
         <div class="car">
          
-            <div class="cars">加入购物车</div>
+            <div class="cars" @click="addTocars()">加入购物车</div>
             <div class="buy">购买</div>
         </div>
         <!-- <div class="buy">
@@ -26,6 +26,17 @@
 <script>
 export default {
     name:'DetailBottomBar',
+    data(){
+        return{
+
+        }
+    },
+    methods:{
+        addTocars() {
+           //console.log('+++')
+           this.$emit('addCars')
+        }
+    }
     
 }
 </script>
@@ -60,13 +71,17 @@ export default {
 .car{
   display: flex;
   line-height: 49px;
-  background-color: yellow;
+
 }
-.buy{
+.car .cars{
+  background-color: #ffe6e8;
+  color: #FF5777;
+}
+.car .buy{
    line-height: 49px;
    width: 100px;
    text-align: center;
-   background-color: pink;
-   color: white;
+   background-color: #ff468f;
+   color: #fff;
 } 
 </style>

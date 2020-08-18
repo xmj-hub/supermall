@@ -8,6 +8,7 @@
                </div>
             </div>
             </div>
+
         </div>
         <div class="info">
             <div v-for="(item,index) in itemParams.set" :key="index" class="info_item">
@@ -39,13 +40,14 @@ export default {
 .param{
     display: flex;
     /* margin-bottom: 10px; */
-    margin: 0px 15px;
+    margin: 0px 10px;
     height: 50px;
     line-height: 50px;
     border-bottom: 1px solid #d2d2d2
 }
 .param_item{
     flex: 1;
+    text-align: center;
 }
 
 .info_item{

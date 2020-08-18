@@ -14,6 +14,7 @@ export default {
 <style scoped>
 .nav-bar{
     display: flex;
+    align-items: center;
     line-height: 44px;
     /* height: 44px; */
     text-align: center;
@@ -21,6 +22,7 @@ export default {
 }
  .left{
   width: 60px;
+  
   /* background-color: red */
  }
  .center{

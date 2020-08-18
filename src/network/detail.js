@@ -12,7 +12,7 @@ export function getdetail(iid){
 
 export function getRecommend() {
     return request({
-        url:'/recommend',
+        url:'/api/recommend',
     })
 }
 export class GoodsInfo{

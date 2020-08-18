@@ -1,14 +1,17 @@
 <template>
   <div class="cart">
     <NavBar class="nav_bar">
-      <div slot="center">购物车({{Length}})</div>
+      <div slot="left" class="image" @click="backhome">
+         <img src="@/assets/img/detail/back.png" alt="">
+      </div>
+      <div slot="center">收藏店铺({{Length}})</div>
       
     </NavBar>
     
     <CartList :cartList="cartList" @checkedall="checkedall"/>
      
    
-     <CartBottomBar ref="bottombar"/>
+     <!-- <CartBottomBar ref="bottombar"/> -->
   </div>
 </template>
 
@@ -16,8 +19,8 @@
 import NavBar from "@/components/common/navbar/NavBar";
 
 
-import CartBottomBar from "./cartChild/CartBottomBar"
-import CartList from "./cartChild/CartList"
+import CartBottomBar from "../Cart/cartChild/CartBottomBar"
+import CartList from "../Cart/cartChild/CartList"
 import { mapGetters } from 'vuex'
 export default {
   name: "Cart",
@@ -42,7 +45,10 @@ export default {
     let result = this.cartList.filter(item => item.checked === true);
        this.$refs.bottombar.checkedAll = result.length > 0 && result.length === this.cartList.length;
    
-  }
+  },
+          backhome() {
+           this.$router.back()
+        }
   }
 };
 </script>
@@ -57,6 +63,9 @@ export default {
   background-color: var(--color-tint);
   color: white;
 }
-
+.image img{
+    height: 30px;
+    vertical-align: middle
+}
 </style>
 

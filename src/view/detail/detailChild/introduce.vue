@@ -46,14 +46,14 @@ export default {
 }
 .newprice{
     color: var(--color-high-text);
-    font-size: 16px;
+    font-size: 24px;
     line-height: 23px;
 }
 .oldprice{
     margin:0 5px;
     position: relative;
     color: #d4d2d4;
-    font-size: 10px;
+    font-size: 20px;
     line-height: 25px;
     
 
@@ -67,10 +67,11 @@ export default {
 .iconprice{
    
    border: 1px solid red;
-   border-radius: 20px;
+   border-radius: 15px;
    color: white;
    font-size: 14px;
-   height: 18px;
+   /* width: 30px; */
+   height: 20px;
    background-color: var(--color-high-text);
 }
 .sales_volume{

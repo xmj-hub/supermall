@@ -30,8 +30,9 @@ export default {
         NavBar
     },
     methods: {
-        changeindex(i){
-         this.currentindex=i
+        changeindex(index){
+         this.currentindex=index
+         this.$emit("titleClick",index)
         },
         backhome() {
            this.$router.back()
